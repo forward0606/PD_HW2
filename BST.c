@@ -40,15 +40,17 @@ void bst_midTraverse(TNode *root){
 }
 
 TNode *BSTInsert(TNode *root, char *A[], int n){
+	//printf("BSTInsert\n");
     root = NULL;
     for(int i=0;i<n;i++){
+		//printf("%d\n",i);
         root = bst_insert(root, A[i]);
     }
     return root;
 }
 
 void BSTFind(TNode *root, char *q[], int exist[], int n){
-    TNode *found;
+	TNode *found;
     for(int i=0;i<n;i++){
         found = bst_find(root, q[i]);
         if(found == NULL){

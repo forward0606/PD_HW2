@@ -21,7 +21,7 @@ char **generator(int n){
                 flag = 0;
             }
         }
-        if(flag == 0){
+        if(flag == 1){
             A[j] = strdup(line);
             j++;
         }

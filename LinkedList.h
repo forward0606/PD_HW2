@@ -16,9 +16,9 @@ const LNode *Lfind(const LNode *,const char *);
 LNode *Ldel(LNode *, const char *);
 
 //return new LinkedList Node
-LNode *LinkedListInsert(LNode *head, const char *A[], const int n);
+LNode *LinkedListInsert(LNode *head, char **A, const int n);
 //exist[i]  means q[i] exist (1) or not (0)
-void LinkedListFind(const LNode *head, const char *q[], int exist[], const int n);
+void LinkedListFind(LNode *head, char *q[], int exist[], const int n);
 // delete all node in linked list
 void delLinkedList(LNode *);
 

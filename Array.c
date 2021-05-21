@@ -1,7 +1,7 @@
 #include "Array.h"
 
 
-int Afind(const char **array, const int arraySize, const char *key){
+int Afind(char *array[], const int arraySize, const char *key){
 	for(int i=0;i<arraySize;i++){
 		if(strcmp(array[i], key) == 0){
 			return i;
@@ -10,15 +10,18 @@ int Afind(const char **array, const int arraySize, const char *key){
 	return -1;
 }
 
-void ArrayInsert(char **array, const char *A[], int size){
+char **ArrayInsert(char **array, char **A, int size){
 	array = (char **)malloc(sizeof(char *) * size);
-	if(array == NULL)
+	if(array == NULL){
+		//
+	}
 	for(int i=0;i<size;i++){
 		array[i] = strdup(A[i]);
 	}
+	return array;
 }
 
-void ArrayFind(const char **array, const int arraySize, const char *q[], int exist[], const int qSize){
+void ArrayFind(char **array, const int arraySize, char *q[], int exist[], const int qSize){
 	for(int i=0;i<qSize;i++){
 		if(Afind(array, arraySize, q[i]) == -1){
 			exist[i] = 0;

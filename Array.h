@@ -6,11 +6,11 @@
 #include<string.h>
 
 
-int Afind(const char **array, const int arraySize, const char *key);
+int Afind(char **array, const int arraySize, const char *key);
 
-void ArrayInsert(char **array, const char *A[], int size);
-void ArrayFind(const char **array, const int arraySize,\
-			const char *q[], int exist[], const int qSize);
+char **ArrayInsert(char **array, char ** A, int size);
+void ArrayFind(char **array, const int arraySize,\
+			char *q[], int exist[], const int qSize);
 void delArray(char **array, int n);
 
 

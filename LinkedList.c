@@ -51,7 +51,7 @@ void Ltraverse(const LNode *root){
     }
 }
 
-LNode *LinkedListInsert(LNode *head, const char *A[], const int n){
+LNode *LinkedListInsert(LNode *head, char **A, const int n){
     head = NULL;
     for(int i = 0; i< n;i++){
         head = Linsert(head, A[i]);
@@ -59,7 +59,7 @@ LNode *LinkedListInsert(LNode *head, const char *A[], const int n){
     return head;
 }
 
-void LinkedListFind(const LNode *head, const char *q[], int exist[], const int n){
+void LinkedListFind(LNode *head, char *q[], int exist[], const int n){
     const LNode *found = NULL;
     for(int i = 0; i< n; i++){
         found = Lfind(head, q[i]);

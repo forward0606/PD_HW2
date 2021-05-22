@@ -1,8 +1,9 @@
-#include "dataGenerate.h"
-#include "Array.h"
-#include "BST.h"
-#include "LinkedList.h"
-#include "AwBS.h"
+#include	"dataGenerate.h"
+#include	"Array.h"
+#include	"BST.h"
+#include	"LinkedList.h"
+#include	"AwBS.h"
+#include	"Hash.h"
 #define MaxLine 8
 
 int main(){
@@ -26,10 +27,12 @@ int main(){
 	LNode *head = NULL;
 	TNode *root = NULL;
 	char **awbs = NULL;
+	hashdb hash;
 	head = LinkedListInsert(head, A, 10);
 	arr = ArrayInsert(arr, A, 10);
 	root = BSTInsert(root, A, 10);
 	awbs = AwBSInsert(awbs, A, 10);
+	HashInsert(&hash, A, 10);
 	printf("insert finished!\n");
 	/*for(int i=0;i<10;i++){
 		printf("%s\n", awbs[i]);
@@ -60,7 +63,13 @@ int main(){
 	for(int i=0;i<Q;i++){
 		printf("%d", exist[i]);
 	}
-	printf("\n");
 	
+	printf("\nhash find:\n");
+	memset(exist, 0, 10*sizeof(int));
+	HashFind(&hash, lines, exist, Q);
+	for(int i=0;i<Q;i++){
+		printf("%d", exist[i]);
+	}
+	printf("\n");
     return 0;
 }

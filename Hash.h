@@ -3,19 +3,20 @@
 
 #include	<stdio.h>
 #include	<string.h>
-#include	<strlib.h>
+#include	<stdlib.h>
 #include	"LinkedList.h"
 
-struct hashdb{
+typedef struct hashdb{
 	LNode **hashTable;
 	int maxHash;
-};
+}hashdb;
 
-int hashFunction(char *key);
-int hFind(hashdb *hash, char *key);
+int hashFunction(char *key, int maxHash);
+const LNode *hFind(hashdb *hash, char *key);
 void hInsert(hashdb *hash, char *key);
-void hashInit(hashdb *hash);
+void hashInit(hashdb *hash, int maxHash);
 
-hashdb *HashInsert(hashdb *hash, char *A[], int size);
+void HashInsert(hashdb *hash, char *A[], int size);
 void HashFind(hashdb *hash, char *q[], int exist[], int qSize);
 
+#endif

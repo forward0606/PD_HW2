@@ -4,72 +4,157 @@
 #include	"LinkedList.h"
 #include	"AwBS.h"
 #include	"Hash.h"
-#define MaxLine 8
+#include	"AVLTree.h"
+#include    <sys/time.h>
+#define		MaxLine		8
+#define     false       0
+#define     true        1
 
-int main(){
-	char **A = generator(10);
-	int Q;
-	char line[32];
-	fgets(line, 32, stdin);
-	Q = atoi(line);
-	for(int i=0;i<10;i++){
-		printf("%s\n", A[i]);
+int mypow(int base, int r){
+    int sum = 1;
+    while(r != 0){
+        if(r %2){
+            sum *= base;
+        }
+        base *= base;
+        r /= 2;
+    }
+    return sum;
+}
+
+int main(int argc, char **argv){
+	int insertDataSize = 1000;
+	int queryDataSize = 1000;
+	int BSTQuery = false;
+	int BinarySearchQuery = false;
+	int ArrayQuery = false;
+	int LinkedListQuery = false;
+	int HashQuery = false;
+    char *temp;
+	// CMD input process
+	for(int i=1;i<argc; i++){
+        if(strcmp(argv[i], "-d") == 0){
+            i++;
+            if((temp = strchr(argv[i], 'e')) != NULL){
+                *temp = '\0';
+                insertDataSize = atoi(argv[i]) * mypow(10, atoi(temp+1));
+            }else{
+                insertDataSize = atoi(argv[i]);
+            }
+        }else if(strcmp(argv[i], "-q") == 0){
+            i++;
+            if((temp = strchr(argv[i], 'e')) != NULL){
+                *temp = '\0';
+                queryDataSize = atoi(argv[i]) * mypow(10, atoi(temp+1));
+            }else{
+                queryDataSize = atoi(argv[i]);
+            }
+        }else if(strcmp(argv[i], "-bst") == 0){
+            BSTQuery = true;
+        }else if(strcmp(argv[i], "-bs") == 0){
+            BinarySearchQuery = true;
+        }else if(strcmp(argv[i], "-arr") == 0){
+            ArrayQuery = true;
+        }else if(strcmp(argv[i], "-ll") == 0){
+            LinkedListQuery = true;
+        }else if(strcmp(argv[i], "-hash") == 0){
+            HashQuery = true;
+        }
 	}
-	char *lines[100];
-	for(int i=0;i<Q;i++){
-		fgets(line, MaxLine+4, stdin);
-		if(line[strlen(line)-1] == '\n'){
-			line[strlen(line)-1] = '\0';
-		}
-		lines[i] = strdup(line);
+
+	// data generate
+	char **A = generator(insertDataSize);
+	char **q = generator(queryDataSize);
+	int *exist = (int *)malloc(queryDataSize * sizeof(int));
+
+	struct  timeval start;
+    struct  timeval end;
+    unsigned long diff;
+
+    if(BSTQuery == true){
+        printf("bst:\n");
+        //build
+        gettimeofday(&start, NULL);
+        TNode *root = NULL;
+        root = BSTInsert(root, A, insertDataSize);
+        gettimeofday(&end, NULL);
+        diff = 1000000 * (end.tv_sec - start.tv_sec) + end.tv_usec - start.tv_usec;
+        printf("building time: %f sec\n",diff/1000000.0);
+
+        //query
+        gettimeofday(&start, NULL);
+        BSTFind(root, q, exist, queryDataSize);
+        gettimeofday(&end, NULL);
+        diff = 1000000 * (end.tv_sec - start.tv_sec) + end.tv_usec - start.tv_usec;
+        printf("query time: %f sec\n\n",diff/1000000.0);
+    }
+    if(BinarySearchQuery == true){
+        printf("binary search:\n");
+        //build
+        gettimeofday(&start, NULL);
+        char **bs;
+        bs = AwBSInsert(bs, A, insertDataSize);
+        gettimeofday(&end, NULL);
+        diff = 1000000 * (end.tv_sec - start.tv_sec) + end.tv_usec - start.tv_usec;
+        printf("building time: %f sec\n",diff/1000000.0);
+
+        //query
+        gettimeofday(&start, NULL);
+        AwBSFind(bs, insertDataSize, q, exist, queryDataSize);
+        gettimeofday(&end, NULL);
+        diff = 1000000 * (end.tv_sec - start.tv_sec) + end.tv_usec - start.tv_usec;
+        printf("query time: %f sec\n\n",diff/1000000.0);
+    }
+	if(ArrayQuery == true){
+        printf("array:\n");
+        //build
+        gettimeofday(&start, NULL);
+        char **arr;
+        arr = ArrayInsert(arr, A, insertDataSize);
+        gettimeofday(&end, NULL);
+        diff = 1000000 * (end.tv_sec - start.tv_sec) + end.tv_usec - start.tv_usec;
+        printf("building time: %f sec\n",diff/1000000.0);
+
+        //query
+        gettimeofday(&start, NULL);
+        ArrayFind(arr, insertDataSize, q, exist, queryDataSize);
+        gettimeofday(&end, NULL);
+        diff = 1000000 * (end.tv_sec - start.tv_sec) + end.tv_usec - start.tv_usec;
+        printf("query time: %f sec\n\n",diff/1000000.0);
 	}
-	char  **arr = NULL;
-	LNode *head = NULL;
-	TNode *root = NULL;
-	char **awbs = NULL;
-	hashdb hash;
-	head = LinkedListInsert(head, A, 10);
-	arr = ArrayInsert(arr, A, 10);
-	root = BSTInsert(root, A, 10);
-	awbs = AwBSInsert(awbs, A, 10);
-	HashInsert(&hash, A, 10);
-	printf("insert finished!\n");
-	/*for(int i=0;i<10;i++){
-		printf("%s\n", awbs[i]);
+	if(LinkedListQuery == true){
+	    printf("linked list:\n");
+        //build
+        gettimeofday(&start, NULL);
+        LNode *L = NULL;
+        L = LinkedListInsert(L, A, insertDataSize);
+        gettimeofday(&end, NULL);
+        diff = 1000000 * (end.tv_sec - start.tv_sec) + end.tv_usec - start.tv_usec;
+        printf("building time: %f sec\n",diff/1000000.0);
+
+        //query
+        gettimeofday(&start, NULL);
+        LinkedListFind(L, q, exist, queryDataSize);
+        gettimeofday(&end, NULL);
+        diff = 1000000 * (end.tv_sec - start.tv_sec) + end.tv_usec - start.tv_usec;
+        printf("query time: %f sec\n\n",diff/1000000.0);
 	}
-	*/
-	int exist[10];
-	memset(exist, 0, 10*sizeof(int));
-	BSTFind(root, lines, exist, Q);
-	printf("\nbst find:\n");
-	for(int i=0;i<Q;i++){
-		printf("%d", exist[i]);
+	if(HashQuery == true){
+        printf("hash:\n");
+        //build
+        gettimeofday(&start, NULL);
+        hashdb hash;
+        HashInsert(&hash, A, insertDataSize);
+        gettimeofday(&end, NULL);
+        diff = 1000000 * (end.tv_sec - start.tv_sec) + end.tv_usec - start.tv_usec;
+        printf("building time: %f sec\n",diff/1000000.0);
+
+        //query
+        gettimeofday(&start, NULL);
+        HashFind(&hash, q, exist, queryDataSize);
+        gettimeofday(&end, NULL);
+        diff = 1000000 * (end.tv_sec - start.tv_sec) + end.tv_usec - start.tv_usec;
+        printf("query time: %f sec\n\n",diff/1000000.0);
 	}
-	printf("\nLinkedList find:\n");
-	memset(exist, 0, 10*sizeof(int));
-	LinkedListFind(head, lines, exist, Q);
-	for(int i=0;i<Q;i++){
-		printf("%d", exist[i]);
-	}
-	printf("\nArray find:\n");
-	memset(exist, 0, 10*sizeof(int));
-	ArrayFind(arr, 10, lines, exist, Q);
-	for(int i=0;i<Q;i++){
-		printf("%d", exist[i]);
-	}
-	printf("\nArray with Binary Search find:\n");
-	memset(exist, 0, 10*sizeof(int));
-	AwBSFind(awbs, 10, lines, exist, Q);
-	for(int i=0;i<Q;i++){
-		printf("%d", exist[i]);
-	}
-	
-	printf("\nhash find:\n");
-	memset(exist, 0, 10*sizeof(int));
-	HashFind(&hash, lines, exist, Q);
-	for(int i=0;i<Q;i++){
-		printf("%d", exist[i]);
-	}
-	printf("\n");
-    return 0;
+	return 0;
 }

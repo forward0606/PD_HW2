@@ -1,5 +1,5 @@
-a.out : main.c Hash.o LinkedList.o dataGenerate.o BST.o Array.o AwBS.o
-	gcc -g main.c Hash.o LinkedList.o dataGenerate.o BST.o Array.o AwBS.o 
+a.out : main.c Hash.o LinkedList.o dataGenerate.o BST.o Array.o AwBS.o AVLTree.o
+	gcc -g main.c Hash.o LinkedList.o dataGenerate.o BST.o Array.o AwBS.o AVLTree.o
 LinkedList.o: LinkedList.c LinkedList.h
 	gcc -c -g LinkedList.c
 dataGenerate.o: dataGenerate.c dataGenerate.h
@@ -12,11 +12,10 @@ AwBS.o: AwBS.h AwBS.c
 	gcc -c -g AwBS.c
 Hash.o: Hash.h Hash.c LinkedList.c LinkedList.h
 	gcc -c -g Hash.c LinkedList.c
+AVLTree.o: AVLTree.c AVLTree.h
+	gcc -c -g AVLTree.c 
 clean:
 	-rm a.out
-	-rm LinkedList.o
-	-rm dataGenerate.o
-	-rm BST.o
-	-rm Array.o
-	-rm AwBS.o
-	-rm Hash.o
+	-rm LinkedList.o AVLTree.o
+	-rm dataGenerate.o BST.o
+	-rm Array.o AwBS.o Hash.o

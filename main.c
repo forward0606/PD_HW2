@@ -30,6 +30,7 @@ int main(int argc, char **argv){
 	int ArrayQuery = false;
 	int LinkedListQuery = false;
 	int HashQuery = false;
+	int AVLQuery = false;
     char *temp;
 	// CMD input process
 	for(int i=1;i<argc; i++){
@@ -59,6 +60,8 @@ int main(int argc, char **argv){
             LinkedListQuery = true;
         }else if(strcmp(argv[i], "-hash") == 0){
             HashQuery = true;
+        }else if(strcmp(argv[i], "-avl") == 0){
+            AVLQuery = true;
         }
 	}
 
@@ -152,6 +155,23 @@ int main(int argc, char **argv){
         //query
         gettimeofday(&start, NULL);
         HashFind(&hash, q, exist, queryDataSize);
+        gettimeofday(&end, NULL);
+        diff = 1000000 * (end.tv_sec - start.tv_sec) + end.tv_usec - start.tv_usec;
+        printf("query time: %f sec\n\n",diff/1000000.0);
+	}
+	if(AVLQuery == true){
+        printf("AVL tree:\n");
+        //build
+        gettimeofday(&start, NULL);
+        ATNode *root = NULL;
+        root = AVLInsert(root, A, insertDataSize);
+        gettimeofday(&end, NULL);
+        diff = 1000000 * (end.tv_sec - start.tv_sec) + end.tv_usec - start.tv_usec;
+        printf("building time: %f sec\n",diff/1000000.0);
+
+        //query
+        gettimeofday(&start, NULL);
+        AVLFind(root, q, exist, queryDataSize);
         gettimeofday(&end, NULL);
         diff = 1000000 * (end.tv_sec - start.tv_sec) + end.tv_usec - start.tv_usec;
         printf("query time: %f sec\n\n",diff/1000000.0);

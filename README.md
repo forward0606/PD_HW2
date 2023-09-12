@@ -19,3 +19,5 @@ test performance of linked list, binary search tree, array, array with binary se
 ex:
 ./a.out -q 100 -d 1000 -ll -bs -arr
 可做 插入1000筆資料並查詢100資料的 linked list 、 array with binary search、 array 的時間測量
+
+report link: https://github.com/forward0606/PD_HW2/blob/main/report.pdf
